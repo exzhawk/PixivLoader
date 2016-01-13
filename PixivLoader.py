@@ -66,19 +66,29 @@ class Pixiv:
         illusts = tree.xpath('//li[@class="image-item "]')
         for illust in illusts:
             illust_url = illust.xpath('./a/@href')[0]
-            # cache thumbnails
-            # todo change url to manga mode if multi
+            # todo cache thumbnails
+            # todo get author and title
+            is_multi = 'multiple' in illust.xpath('./a[0]/@class')[0]
+            if is_multi:
+                illust_url = illust_url.replace('medium', 'manga')
             illust_response = self.get(urljoin(self.base_urls['home'], illust_url), headers={'Referer': response.url})
-            yield self.parse_illust(illust_response)
+            if is_multi:
+                yield self.parse_manga(illust_response)
+            else:
+                yield self.parse_illust(illust_response)
 
     def parse_illust(self, response):
         tree = etree.HTML(response.text)
-        # todo parse single illust page and download pic
+        img_src = tree.xpath('//div[starts-with(@class,"_illust_modal")]/div[@class="wrapper"]/img/@data-src')[0]
+        # todo download pic and return
         pass
 
     def parse_manga(self, response):
         tree = etree.HTML(response.text)
-        # todo parse single illust page and download pic
+        pics = tree.xpath('//div[@class="item-container"]')
+        for pic in pics:
+            img_src = pic.xpath('./img/@data-src')[0]
+        # todo download pic and return
         pass
 
 
