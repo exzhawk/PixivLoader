@@ -1,19 +1,18 @@
-import cPickle
 import os
-from urlparse import urljoin
+import pickle
+from urllib.parse import urljoin
 
 import requests
-from flask import Flask, send_from_directory, send_file
+import tornado.ioloop
+import tornado.web
 from lxml import etree
 
 from account import account
 from settings import *
 
-app = Flask(__name__)
-
 
 class Pixiv:
-    cookies_filename = os.path.join(app.root_path, 'cookies.pkl')
+    cookies_filename = os.path.join(os.path.dirname(__file__), 'cookies.pkl')
     base_urls = {
         'following_illust': 'http://www.pixiv.net/bookmark_new_illust.php?p=%s',
         'login': 'https://www.secure.pixiv.net/login.php',
@@ -28,7 +27,7 @@ class Pixiv:
 
     def __init__(self):
         try:
-            self.session.cookies = cPickle.load(open(self.cookies_filename, 'rb'))
+            self.session.cookies = pickle.load(open(self.cookies_filename, 'rb'))
         except IOError:
             pass
 
@@ -46,9 +45,9 @@ class Pixiv:
     def do_login(self):
         account_extra = ('mode', 'login'), ('skip', '1')
         response = self.post(url=self.base_urls['login'], data=dict(account_extra, **account))
-        if response.url == u'http://www.pixiv.net/':
+        if response.url == 'http://www.pixiv.net/':
             self.is_login = True
-            cPickle.dump(self.session.cookies, open(self.cookies_filename, 'wb'))
+            pickle.dump(self.session.cookies, open(self.cookies_filename, 'wb'))
 
     def get(self, url, **kwargs):
         return self.session.get(url=url, **kwargs)
@@ -95,22 +94,18 @@ class Pixiv:
 pixiv = Pixiv()
 
 
-@app.route('/get_following/<int:page_number>')
-def get_following(page_number):
-    return pixiv.get_following(page_number)
-
-
-@app.route('/')
-def index_page():
-    return send_file(os.path.join(app.static_folder, "index.html"))
-
-
-@app.route('/<path:path>')
-def static_html(path):
-    return send_from_directory(app.static_folder, path)
+class GetFollowingHandler(tornado.web.RequestHandler):
+    def get(self, *args, **kwargs):
+        return pixiv.get_following(args[0])
 
 
 if __name__ == '__main__':
-    pixiv.login()
+    # pixiv.login()
     # app.debug = True
-    app.run()
+    app = tornado.web.Application([
+        (r'/get_following/(.*)', GetFollowingHandler),
+        (r'/(.*)', tornado.web.StaticFileHandler, {'path': os.path.join(os.path.dirname(__file__), 'static/'),
+                                                   'default_filename': 'index.html'})
+    ])
+    app.listen(8000)
+    tornado.ioloop.IOLoop.current().start()
