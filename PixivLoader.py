@@ -60,13 +60,20 @@ class Pixiv:
         result = list(self.parse_list(response))
         return result
 
+    def get_pic(self, url, referer):
+        pass
+
     def parse_list(self, response):
         tree = etree.HTML(response.text)
         illusts = tree.xpath('//li[@class="image-item "]')
         for illust in illusts:
             illust_url = illust.xpath('./a/@href')[0]
+            illust_author = illust.xpath('./a[@class="user ui-profile-popup"]')[0]
+            illust_author_name = illust_author.xpath('./@data-user_name')[0]
+            illust_author_id = illust_author.xpath('./@data-user_id')[0]
+            illust_title = illust.xpath('./a/h1[@class="title"]/text()')[0]
+            illust_thumbnail_url = illust.xpath('./a/div[@class="_layout-thumbnail"]/img[@class="_thumbnail"]/@src')[0]
             # todo cache thumbnails
-            # todo get author and title
             is_multi = 'multiple' in illust.xpath('./a[0]/@class')[0]
             if is_multi:
                 illust_url = illust_url.replace('medium', 'manga')
@@ -100,7 +107,7 @@ class GetFollowingHandler(tornado.web.RequestHandler):
 
 
 if __name__ == '__main__':
-    # pixiv.login()
+    pixiv.login()
     # app.debug = True
     app = tornado.web.Application([
         (r'/get_following/(.*)', GetFollowingHandler),
