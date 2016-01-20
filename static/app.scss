@@ -1,31 +1,10 @@
 body {
   background-color: red;
-  #big .item{
-    background: #0c83e7;
-    padding: 80px 0px;
-    margin: 5px;
-    color: #FFF;
-    -webkit-border-radius: 3px;
-    -moz-border-radius: 3px;
-    border-radius: 3px;
-    text-align: center;
-  }
-  #small .item{
-    background: #C9C9C9;
-    padding: 10px 0px;
-    margin: 5px;
-    color: #FFF;
-    -webkit-border-radius: 3px;
-    -moz-border-radius: 3px;
-    border-radius: 3px;
-    text-align: center;
-    cursor: pointer;
-  }
-  #small .item h1{
-    font-size: 18px;
-  }
-  #small .synced .item{
-    background: #0c83e7;
+
+  #thumbnail{
+    .owl-item{
+      background-color: blue;
+    }
   }
 
   #debug{

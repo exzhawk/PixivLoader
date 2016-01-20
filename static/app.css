@@ -1,28 +1,7 @@
 body {
   background-color: red; }
-  body #big .item {
-    background: #0c83e7;
-    padding: 80px 0px;
-    margin: 5px;
-    color: #FFF;
-    -webkit-border-radius: 3px;
-    -moz-border-radius: 3px;
-    border-radius: 3px;
-    text-align: center; }
-  body #small .item {
-    background: #C9C9C9;
-    padding: 10px 0px;
-    margin: 5px;
-    color: #FFF;
-    -webkit-border-radius: 3px;
-    -moz-border-radius: 3px;
-    border-radius: 3px;
-    text-align: center;
-    cursor: pointer; }
-  body #small .item h1 {
-    font-size: 18px; }
-  body #small .synced .item {
-    background: #0c83e7; }
+  body #thumbnail .owl-item {
+    background-color: blue; }
   body #debug {
     position: fixed;
     z-index: 999;
