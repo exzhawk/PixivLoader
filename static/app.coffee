@@ -7,7 +7,7 @@ $ ->
       center: true
       nav: false
       dots: false
-  .on 'mousewheel', '.owl-stage', (e)->
+  .on 'mousewheel', (e)->
     if e.deltaY < 0
       $thumbnail.trigger 'next.owl'
     else

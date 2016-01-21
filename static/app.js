@@ -9,7 +9,7 @@
       center: true,
       nav: false,
       dots: false
-    }).on('mousewheel', '.owl-stage', function(e) {
+    }).on('mousewheel', function(e) {
       if (e.deltaY < 0) {
         $thumbnail.trigger('next.owl');
       } else {
