@@ -15,7 +15,7 @@ class GetFollowingHandler(tornado.web.RequestHandler):
 
 
 if __name__ == '__main__':
-    # pixiv.login()
+    pixiv.login()
     app = tornado.web.Application([
         (r'/get_following/(.*)', GetFollowingHandler),
         (r'/(.*)', tornado.web.StaticFileHandler, {'path': os.path.join(os.path.dirname(__file__), 'static/'),
