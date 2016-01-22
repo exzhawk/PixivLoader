@@ -6,7 +6,10 @@ from urllib.parse import quote, urljoin
 
 from lxml import etree
 from requests_futures.sessions import FuturesSession
+from sqlalchemy import create_engine
+from sqlalchemy.orm import sessionmaker
 
+from Illust import *
 from account import account
 from settings import PROXIES, HEADERS, CACHE_DIR
 
@@ -19,6 +22,9 @@ class Pixiv:
         'test_login': 'http://www.pixiv.net/stacc/?mode=unify',
         'home': 'http://www.pixiv.net/',
     }
+    engine = create_engine('sqlite:///data.db')
+    db_session = sessionmaker()
+    db_session.configure(bind=engine)
     # session = requests.Session()
     session = FuturesSession(max_workers=10)
     session.proxies = PROXIES
@@ -81,6 +87,8 @@ class Pixiv:
         illusts = tree.xpath('//li[@class="image-item "]')
         for illust in illusts:
             illust_url = illust.xpath('./a/@href')[0]
+            id = int(illust_url.split('=')[-1])
+            query = self.db_session.query(Illust).all
             illust_author = illust.xpath('./a[@class="user ui-profile-popup"]')[0]
             illust_author_name = illust_author.xpath('./@data-user_name')[0]
             illust_author_id = illust_author.xpath('./@data-user_id')[0]
@@ -91,8 +99,7 @@ class Pixiv:
             if is_multi:
                 illust_url = illust_url.replace('medium', 'manga')
             illust_response = self.get(urljoin(self.base_urls['home'], illust_url), headers={'Referer': response.url})
-            meta = {'id': int(illust_url.split('=')[-1]),
-                    'url': illust_url,
+            meta = {'url': illust_url,
                     'title': illust_title,
                     'author_name': illust_author_name,
                     'author_id': illust_author_id,

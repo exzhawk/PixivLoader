@@ -1,10 +1,9 @@
 import json
-import os
 
 import tornado.ioloop
 import tornado.web
 
-from Pixiv import Pixiv
+from Pixiv import *
 
 pixiv = Pixiv()
 
