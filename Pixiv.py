@@ -62,21 +62,6 @@ class Pixiv:
         result = list(self.parse_list(response))
         return result
 
-    def cache_pic(self, url, referer):
-        file_name = quote(url, safe='')
-        file_path = os.path.join(CACHE_DIR, file_name)
-        if os.path.isfile(file_path):
-            pass
-        else:
-            self.session.get(url, headers={'Referer': referer}, background_callback=self.save_pic)
-
-    def save_pic(self, session, response):
-        url = response.url
-        file_name = quote(url, safe='')
-        file_path = os.path.join(CACHE_DIR, file_name)
-        with open(file_path, 'wb') as f:
-            f.write(response.content)
-
     def parse_list(self, response):
         tree = etree.HTML(response.text)
         illusts = tree.xpath('//li[@class="image-item "]')
@@ -93,9 +78,16 @@ class Pixiv:
                 illust_title = illust.xpath('./a/h1[@class="title"]/text()')[0]
                 illust_thumbnail_url = illust.xpath('./a/div/img[@class="_thumbnail"]/@src')[0]
                 self.cache_pic(illust_thumbnail_url, response.url)
-                is_multi = 'multiple' in illust.xpath('./a[1]/@class')[0]
+                class_names = illust.xpath('./a[1]/@class')[0]
+                is_multi = 'multiple' in class_names
+                is_ugoku = 'ugoku-illust' in class_names
+                illust_special = ''
                 if is_multi:
                     illust_url = illust_url.replace('medium', 'manga')
+                if is_multi:
+                    illust_special = 'multi'
+                elif is_ugoku:
+                    illust_special = 'ugoku'
                 illust_response = self.get(urljoin(self.base_urls['home'], illust_url),
                                            headers={'Referer': response.url})
                 meta = {'url': illust_url,
@@ -103,9 +95,12 @@ class Pixiv:
                         'author_name': illust_author_name,
                         'author_id': illust_author_id,
                         'thumbnail': illust_thumbnail_url,
-                        'is_multi': is_multi}
+                        'special': illust_special}
                 if is_multi:
                     illust_data = self.parse_manga(illust_response, meta)
+                elif is_ugoku:
+                    illust_data = self.parse_ugoku(illust_response, meta)
+                    continue
                 else:
                     illust_data = self.parse_illust(illust_response, meta)
                 self.cache_db.set(illust_id, illust_data)
@@ -129,3 +124,28 @@ class Pixiv:
             self.cache_pic(img_src, response.url)
             d['img'].append(img_src)
         return d
+
+    def parse_ugoku(self, response, meta):
+        d = dict(meta)
+        d['img'] = []
+        tree = etree.HTML(response.text)
+        # img_src = tree.xpath('//')
+        img_src = ''
+        self.cache_pic(img_src, response.url)
+        d['img'] = [img_src]
+        return d
+
+    def cache_pic(self, url, referer):
+        file_name = quote(url, safe='')
+        file_path = os.path.join(CACHE_DIR, file_name)
+        if os.path.isfile(file_path):
+            pass
+        else:
+            self.session.get(url, headers={'Referer': referer}, background_callback=self.save_pic)
+
+    def save_pic(self, session, response):
+        url = response.url
+        file_name = quote(url, safe='')
+        file_path = os.path.join(CACHE_DIR, file_name)
+        with open(file_path, 'wb') as f:
+            f.write(response.content)
