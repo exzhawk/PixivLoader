@@ -1,13 +1,23 @@
 body {
-  background-color: red;
-
-  #thumbnail{
-    .owl-item{
-      background-color: blue;
+  //background-color: red;
+  #big {
+    height: 800px;
+    width: 100%;
+    background: no-repeat center;
+    background-size: contain;
+  }
+  #thumbnail {
+    .owl-item {
+      //border: blue 1px solid;
+      .thumbnail_img {
+        height: 150px;
+        width: 150px;
+        background: no-repeat center;
+      }
     }
   }
 
-  #debug{
+  #debug {
     position: fixed;
     z-index: 999;
     bottom: 0;

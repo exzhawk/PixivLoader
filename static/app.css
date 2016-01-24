@@ -1,11 +1,16 @@
-body {
-  background-color: red; }
-  body #thumbnail .owl-item {
-    background-color: blue; }
-  body #debug {
-    position: fixed;
-    z-index: 999;
-    bottom: 0;
-    background-color: white; }
+body #big {
+  height: 800px;
+  width: 100%;
+  background: no-repeat center;
+  background-size: contain; }
+body #thumbnail .owl-item .thumbnail_img {
+  height: 150px;
+  width: 150px;
+  background: no-repeat center; }
+body #debug {
+  position: fixed;
+  z-index: 999;
+  bottom: 0;
+  background-color: white; }
 
 /*# sourceMappingURL=app.css.map */
