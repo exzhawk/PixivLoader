@@ -14,12 +14,19 @@ class GetFollowingHandler(tornado.web.RequestHandler):
         self.write(result)
 
 
+class GetCacheImgHandler(tornado.web.StaticFileHandler):
+    def parse_url_path(self, url_path):
+        pass
+        # todo convert path
+
+
 if __name__ == '__main__':
     pixiv.login()
+    settings = {'static_path': os.path.join(os.path.dirname(__file__), 'static/'),}
     app = tornado.web.Application([
         (r'/get_following/(.*)', GetFollowingHandler),
-        (r'/(.*)', tornado.web.StaticFileHandler, {'path': os.path.join(os.path.dirname(__file__), 'static/'),
-                                                   'default_filename': 'index.html'})
+        (r'/get_file/(.*)', tornado.web.StaticFileHandler, {'path': CACHE_DIR}),
+        (r'/(.*)', tornado.web.StaticFileHandler, {'path': settings['static_path'], 'default_filename': 'index.html'})
     ])
     app.listen(8000)
     tornado.ioloop.IOLoop.current().start()

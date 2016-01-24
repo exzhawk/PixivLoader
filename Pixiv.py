@@ -100,52 +100,47 @@ class Pixiv:
                     illust_data = self.parse_manga(illust_response, meta)
                 elif is_ugoku:
                     illust_data = self.parse_ugoku(illust_response, meta)
-                    continue
                 else:
                     illust_data = self.parse_illust(illust_response, meta)
                 self.cache_db.set(illust_id, illust_data)
                 yield illust_data
 
     def parse_illust(self, response, meta):
-        d = dict(meta)
-        tree = etree.HTML(response.text)
-        img_src = tree.xpath('//div[starts-with(@class,"_illust_modal")]/div[@class="wrapper"]/img/@data-src')[0]
-        self.cache_pic(img_src, response.url)
-        d['img'] = [img_src]
-        return d
+        return self.prepare_parse(response, meta, '//div[starts-with(@class,"_illust_modal")]/div[@class="wrapper"]')
 
     def parse_manga(self, response, meta):
+        return self.prepare_parse(response, meta, '//div[@class="item-container"]')
+
+    def parse_ugoku(self, response, meta):
+        d = dict(meta)
+        d['img'].append('')
+        return d
+
+    def prepare_parse(self, response, meta, xpath_str):
         d = dict(meta)
         d['img'] = []
         tree = etree.HTML(response.text)
-        pics = tree.xpath('//div[@class="item-container"]')
+        pics = tree.xpath(xpath_str)
         for pic in pics:
             img_src = pic.xpath('./img/@data-src')[0]
             self.cache_pic(img_src, response.url)
             d['img'].append(img_src)
         return d
 
-    def parse_ugoku(self, response, meta):
-        d = dict(meta)
-        d['img'] = []
-        tree = etree.HTML(response.text)
-        # img_src = tree.xpath('//')
-        img_src = ''
-        self.cache_pic(img_src, response.url)
-        d['img'] = [img_src]
-        return d
-
     def cache_pic(self, url, referer):
-        file_name = quote(url, safe='')
+        file_name = self.quote_url(url)
         file_path = os.path.join(CACHE_DIR, file_name)
         if os.path.isfile(file_path):
             pass
         else:
             self.session.get(url, headers={'Referer': referer}, background_callback=self.save_pic)
 
+    def quote_url(self, url):
+        return quote(url, safe='')
+
     def save_pic(self, session, response):
         url = response.url
-        file_name = quote(url, safe='')
+        file_name = self.quote_url(url)
         file_path = os.path.join(CACHE_DIR, file_name)
         with open(file_path, 'wb') as f:
             f.write(response.content)
