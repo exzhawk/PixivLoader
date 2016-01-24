@@ -94,7 +94,7 @@ class Pixiv:
                         'title': illust_title,
                         'author_name': illust_author_name,
                         'author_id': illust_author_id,
-                        'thumbnail': illust_thumbnail_url,
+                        'thumbnail': self.quote_url(illust_thumbnail_url),
                         'special': illust_special}
                 if is_multi:
                     illust_data = self.parse_manga(illust_response, meta)
@@ -106,17 +106,17 @@ class Pixiv:
                 yield illust_data
 
     def parse_illust(self, response, meta):
-        return self.prepare_parse(response, meta, '//div[starts-with(@class,"_illust_modal")]/div[@class="wrapper"]')
+        return self.parse_by_xpath(response, meta, '//div[starts-with(@class,"_illust_modal")]/div[@class="wrapper"]')
 
     def parse_manga(self, response, meta):
-        return self.prepare_parse(response, meta, '//div[@class="item-container"]')
+        return self.parse_by_xpath(response, meta, '//div[@class="item-container"]')
 
     def parse_ugoku(self, response, meta):
         d = dict(meta)
         d['img'].append('')
         return d
 
-    def prepare_parse(self, response, meta, xpath_str):
+    def parse_by_xpath(self, response, meta, xpath_str):
         d = dict(meta)
         d['img'] = []
         tree = etree.HTML(response.text)
@@ -124,7 +124,7 @@ class Pixiv:
         for pic in pics:
             img_src = pic.xpath('./img/@data-src')[0]
             self.cache_pic(img_src, response.url)
-            d['img'].append(img_src)
+            d['img'].append(self.quote_url(img_src))
         return d
 
     def cache_pic(self, url, referer):
