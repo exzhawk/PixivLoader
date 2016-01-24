@@ -16,6 +16,9 @@
         $thumbnail.trigger('prev.owl');
       }
       return e.preventDefault();
+    }).on('click', '.owl-item', function(e) {
+      e.preventDefault();
+      return $thumbnail.trigger('to.owl.carousel', [$(this).index(), 250, true]);
     });
     $('#nextBtn').on("click", function() {
       return $thumbnail.trigger("next.owl");
