@@ -1,11 +1,26 @@
-body {
-  //background-color: red;
+html, body {
+  margin: 0;
+  height: 100%;
+  width: 100%;
+}
+
+#container {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: stretch;
+  align-content: stretch;
+
   #big {
-    height: 800px;
+    //height: 800px;
+    flex: 1;
     width: 100%;
     background: no-repeat center;
     background-size: contain;
   }
+
   #thumbnail {
     .owl-item {
       //border: blue 1px solid;
@@ -16,12 +31,12 @@ body {
       }
     }
   }
+}
 
-  #debug {
-    position: fixed;
-    z-index: 999;
-    bottom: 0;
-    background-color: white;
-  }
+#debug {
+  position: fixed;
+  z-index: 999;
+  bottom: 0;
+  background-color: white;
 }
 

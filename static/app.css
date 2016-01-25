@@ -1,13 +1,27 @@
-body #big {
-  height: 800px;
+html, body {
+  margin: 0;
+  height: 100%;
+  width: 100%; }
+
+#container {
+  height: 100%;
   width: 100%;
-  background: no-repeat center;
-  background-size: contain; }
-body #thumbnail .owl-item .thumbnail_img {
-  height: 150px;
-  width: 150px;
-  background: no-repeat center; }
-body #debug {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: stretch;
+  align-content: stretch; }
+  #container #big {
+    flex: 1;
+    width: 100%;
+    background: no-repeat center;
+    background-size: contain; }
+  #container #thumbnail .owl-item .thumbnail_img {
+    height: 150px;
+    width: 150px;
+    background: no-repeat center; }
+
+#debug {
   position: fixed;
   z-index: 999;
   bottom: 0;

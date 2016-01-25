@@ -1,4 +1,5 @@
 $ ->
+  init = true
   $big = $('#big')
   $thumbnail = $('#thumbnail')
   $thumbnail
@@ -20,6 +21,10 @@ $ ->
   .on 'changed.owl.carousel', (e) ->
     current = e.item.index
     change_to(current)
+    count = e.item.count
+    if count - current == 1
+      load_page(current_page)
+
 
   change_to = (index) ->
     img_src = $thumbnail.find('.owl-stage').children('.owl-item').eq(index).find('.thumbnail_img').attr('big')
@@ -31,20 +36,28 @@ $ ->
   $('#prevBtn').on "click", ->
     $thumbnail.trigger "prev.owl"
 
+  load_page = (page_number) ->
+    $.getJSON
+      url: '/get_following/' + page_number
+      success: (data)->
+        for illust in data
+          if illust['special'] != 'ugoku'
+            $item = $('<div>')
+            .addClass 'owl-item'
+            $('<div>')
+            .addClass 'thumbnail_img'
+            .attr 'big', illust['img'][0]
+            .css("background-image", "url('/get_file/" + illust['thumbnail'] + "')")
+            .appendTo($item)
+            $thumbnail.trigger "add.owl.carousel", [$item]
+        $thumbnail.trigger "refresh.owl.carousel"
+        console.log(init)
+        if init == true
+          change_to(0)
+          init = false
+    current_page += 1
+
+
   current_page = 1
-  $.getJSON
-    url: '/get_following/' + current_page
-    success: (data)->
-      for illust in data
-        if illust['special'] != 'ugoku'
-          $item = $('<div>')
-          .addClass 'owl-item'
-          $('<div>')
-          .addClass 'thumbnail_img'
-          .attr 'big', illust['img'][0]
-          .css("background-image", "url('/get_file/" + illust['thumbnail'] + "')")
-          .appendTo($item)
-          $thumbnail.trigger "add.owl.carousel", [$item]
-      $thumbnail.trigger "refresh.owl.carousel"
-      change_to(0)
+  load_page(current_page)
 
