@@ -52,7 +52,11 @@ class Pixiv:
             pickle.dump(self.session.cookies, open(self.cookies_filename, 'wb'))
 
     def get(self, url, **kwargs):
-        return self.session.get(url=url, **kwargs).result()
+        r = self.session.get(url=url, **kwargs).result()
+        if r.status_code in (200, 301, 302, 500):
+            return r
+        else:
+            return self.get(url, **kwargs)
 
     def post(self, url, data=None, **kwargs):
         return self.session.post(url=url, data=data, **kwargs).result()
@@ -113,6 +117,7 @@ class Pixiv:
 
     def parse_ugoku(self, response, meta):
         d = dict(meta)
+        d['img'] = []
         d['img'].append('')
         return d
 
@@ -139,8 +144,11 @@ class Pixiv:
         return quote(url, safe='')
 
     def save_pic(self, session, response):
-        url = response.url
-        file_name = self.quote_url(url)
-        file_path = os.path.join(CACHE_DIR, file_name)
-        with open(file_path, 'wb') as f:
-            f.write(response.content)
+        if response.status_code in (200, 301, 302, 500):
+            url = response.url
+            file_name = self.quote_url(url)
+            file_path = os.path.join(CACHE_DIR, file_name)
+            with open(file_path, 'wb') as f:
+                f.write(response.content)
+        else:
+            self.session.get(response.url, headers=response.request.headers, background_callback=self.save_pic)
