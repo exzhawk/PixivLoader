@@ -48,6 +48,13 @@ $ ->
   $('#prevBtn').on "click", ->
     $thumbnail.trigger "prev.owl"
 
+  $('#prev_touch').on "click", (e) ->
+    $thumbnail.trigger "prev.owl"
+    e.preventDefault()
+  $('#next_touch').on "click", (e)->
+    $thumbnail.trigger "next.owl"
+    e.preventDefault()
+
   load_page = (page_number) ->
     $.getJSON
       url: '/get_following/' + page_number

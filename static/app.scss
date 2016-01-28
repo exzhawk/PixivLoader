@@ -13,19 +13,25 @@ html, body {
   align-items: stretch;
   align-content: stretch;
 
+  #big_wrapper {
+    //height: 800px;
+    flex: 1;
+    width: 100%;
+    display: flex;
+    #big {
+      flex: 1;
+      background: no-repeat center;
+      background-size: contain;
+      display: flex;
+      .big_touch {
+        flex: 1
+      }
+    }
+  }
   #title, #author {
     margin-left: auto;
     margin-right: auto;
   }
-
-  #big {
-    //height: 800px;
-    flex: 1;
-    width: 100%;
-    background: no-repeat center;
-    background-size: contain;
-  }
-
   #thumbnail {
     .owl-item {
       //border: blue 1px solid;
@@ -34,6 +40,10 @@ html, body {
         width: 150px;
         background: no-repeat center;
       }
+    }
+    .owl-item.center {
+      border-top: 5px solid dodgerblue;
+      box-sizing: border-box;
     }
   }
 }

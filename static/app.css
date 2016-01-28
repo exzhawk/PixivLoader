@@ -11,18 +11,27 @@ html, body {
   justify-content: flex-start;
   align-items: stretch;
   align-content: stretch; }
+  #container #big_wrapper {
+    flex: 1;
+    width: 100%;
+    display: flex; }
+    #container #big_wrapper #big {
+      flex: 1;
+      background: no-repeat center;
+      background-size: contain;
+      display: flex; }
+      #container #big_wrapper #big .big_touch {
+        flex: 1; }
   #container #title, #container #author {
     margin-left: auto;
     margin-right: auto; }
-  #container #big {
-    flex: 1;
-    width: 100%;
-    background: no-repeat center;
-    background-size: contain; }
   #container #thumbnail .owl-item .thumbnail_img {
     height: 150px;
     width: 150px;
     background: no-repeat center; }
+  #container #thumbnail .owl-item.center {
+    border-top: 5px solid dodgerblue;
+    box-sizing: border-box; }
 
 #debug {
   position: fixed;

@@ -56,6 +56,14 @@
     $('#prevBtn').on("click", function() {
       return $thumbnail.trigger("prev.owl");
     });
+    $('#prev_touch').on("click", function(e) {
+      $thumbnail.trigger("prev.owl");
+      return e.preventDefault();
+    });
+    $('#next_touch').on("click", function(e) {
+      $thumbnail.trigger("next.owl");
+      return e.preventDefault();
+    });
     load_page = function(page_number) {
       $.getJSON({
         url: '/get_following/' + page_number,
