@@ -6,11 +6,21 @@
     $big = $('#big');
     $thumbnail = $('#thumbnail');
     $thumbnail.owlCarousel({
-      items: 5,
       margin: 10,
       center: true,
       nav: false,
-      dots: false
+      dots: false,
+      responsive: {
+        0: {
+          items: 5
+        },
+        1200: {
+          items: 9
+        },
+        1800: {
+          items: 13
+        }
+      }
     }).on('mousewheel', function(e) {
       if (e.deltaY < 0) {
         $thumbnail.trigger('next.owl');
@@ -60,7 +70,6 @@
             }
           }
           $thumbnail.trigger("refresh.owl.carousel");
-          console.log(init);
           if (init === true) {
             change_to(0);
             return init = false;
