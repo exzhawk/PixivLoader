@@ -42,12 +42,6 @@ $ ->
     author_name = img.attr 'author_name'
     $("#author").text(author_name)
 
-
-  $('#nextBtn').on "click", ->
-    $thumbnail.trigger "next.owl"
-  $('#prevBtn').on "click", ->
-    $thumbnail.trigger "prev.owl"
-
   $('#prev_touch').on "click", (e) ->
     $thumbnail.trigger "prev.owl"
     e.preventDefault()

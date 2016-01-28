@@ -50,12 +50,6 @@
       author_name = img.attr('author_name');
       return $("#author").text(author_name);
     };
-    $('#nextBtn').on("click", function() {
-      return $thumbnail.trigger("next.owl");
-    });
-    $('#prevBtn').on("click", function() {
-      return $thumbnail.trigger("prev.owl");
-    });
     $('#prev_touch').on("click", function(e) {
       $thumbnail.trigger("prev.owl");
       return e.preventDefault();
