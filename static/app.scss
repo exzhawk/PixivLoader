@@ -13,6 +13,11 @@ html, body {
   align-items: stretch;
   align-content: stretch;
 
+  #title, #author {
+    margin-left: auto;
+    margin-right: auto;
+  }
+
   #big {
     //height: 800px;
     flex: 1;

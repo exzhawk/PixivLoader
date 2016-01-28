@@ -31,9 +31,14 @@
       }
     });
     change_to = function(index) {
-      var img_src;
-      img_src = $thumbnail.find('.owl-stage').children('.owl-item').eq(index).find('.thumbnail_img').attr('big');
-      return $big.css("background-image", "url('/get_file/" + img_src + "')");
+      var author_name, img, img_src, title;
+      img = $thumbnail.find('.owl-stage').children('.owl-item').eq(index).find('.thumbnail_img');
+      img_src = img.attr('big');
+      $big.css("background-image", "url('/get_file/" + img_src + "')");
+      title = img.attr('title');
+      $("#title").text(title);
+      author_name = img.attr('author_name');
+      return $("#author").text(author_name);
     };
     $('#nextBtn').on("click", function() {
       return $thumbnail.trigger("next.owl");
@@ -50,7 +55,7 @@
             illust = data[i];
             if (illust['special'] !== 'ugoku') {
               $item = $('<div>').addClass('owl-item');
-              $('<div>').addClass('thumbnail_img').attr('big', illust['img'][0]).css("background-image", "url('/get_file/" + illust['thumbnail'] + "')").appendTo($item);
+              $('<div>').addClass('thumbnail_img').attr('big', illust['img'][0]).attr('title', illust['title']).attr('author_name', illust['author_name']).css("background-image", "url('/get_file/" + illust['thumbnail'] + "')").appendTo($item);
               $thumbnail.trigger("add.owl.carousel", [$item]);
             }
           }

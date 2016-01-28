@@ -27,8 +27,13 @@ $ ->
 
 
   change_to = (index) ->
-    img_src = $thumbnail.find('.owl-stage').children('.owl-item').eq(index).find('.thumbnail_img').attr('big')
+    img = $thumbnail.find('.owl-stage').children('.owl-item').eq(index).find('.thumbnail_img')
+    img_src = img.attr 'big'
     $big.css("background-image", "url('/get_file/" + img_src + "')")
+    title = img.attr 'title'
+    $("#title").text(title)
+    author_name = img.attr 'author_name'
+    $("#author").text(author_name)
 
 
   $('#nextBtn').on "click", ->
@@ -47,6 +52,8 @@ $ ->
             $('<div>')
             .addClass 'thumbnail_img'
             .attr 'big', illust['img'][0]
+            .attr 'title', illust['title']
+            .attr 'author_name', illust['author_name']
             .css("background-image", "url('/get_file/" + illust['thumbnail'] + "')")
             .appendTo($item)
             $thumbnail.trigger "add.owl.carousel", [$item]
