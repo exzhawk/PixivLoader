@@ -5,13 +5,12 @@ import tornado.web
 
 from Pixiv import *
 
-pixiv = Pixiv()
-
 
 class GetFollowingHandler(tornado.web.RequestHandler):
     def get(self, *args, **kwargs):
-        result = json.dumps(pixiv.get_following(args[0]))
-        self.write(result)
+        result = pixiv.get_following(args[0])
+        self.write(json.dumps(result))
+        pixiv.cache_pic(result)
 
 
 class GetCacheImgHandler(tornado.web.StaticFileHandler):
@@ -19,8 +18,8 @@ class GetCacheImgHandler(tornado.web.StaticFileHandler):
         return quote(url_path, safe='')
 
 
+pixiv = Pixiv()
 if __name__ == '__main__':
-    pixiv.login()
     settings = {'static_path': os.path.join(os.path.dirname(__file__), 'static/'),}
     app = tornado.web.Application([
         (r'/get_following/(.*)', GetFollowingHandler),
