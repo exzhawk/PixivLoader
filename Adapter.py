@@ -16,6 +16,9 @@ class RetryProxyAdapter(HTTPAdapter):
         self.timeout = timeout
         self.max_retries.status_forcelist = (502,)
 
+    def cert_verify(self, conn, url, verify, cert):
+        pass
+
     def send(self, request, stream=False, timeout=None, verify=True, cert=None, proxies=None):
         return super(RetryProxyAdapter, self).send(request, stream, self.timeout, verify, cert, proxies=self.proxies)
 
