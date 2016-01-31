@@ -1,5 +1,4 @@
-/cache_db.pkl
-/cookies.pkl
+*.pkl
 .idea
 /account.py
 # Byte-compiled / optimized / DLL files
