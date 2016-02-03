@@ -1,7 +1,13 @@
+$blue: #2196F3;
+
 html, body {
   margin: 0;
   height: 100%;
   width: 100%;
+}
+
+* {
+  box-sizing: border-box;
 }
 
 #container {
@@ -12,6 +18,34 @@ html, body {
   justify-content: flex-start;
   align-items: stretch;
   align-content: stretch;
+
+  #info_wrapper {
+    #link_wrapper {
+      width: 100%;
+      display: flex;
+      .info {
+        flex: 1;
+      }
+      #title {
+        text-align: right;
+      }
+      #author {
+        text-align: left;
+      }
+      .sep {
+        margin: 0 10px;
+      }
+    }
+    &:hover #caption {
+      display: block !important;
+    }
+    #caption {
+      display: none;
+      position: absolute;
+      z-index: 999;
+      background: white;
+    }
+  }
 
   #big_wrapper {
     //height: 800px;
@@ -40,11 +74,23 @@ html, body {
         width: 150px;
         background: no-repeat center;
       }
+      .multi::after {
+        content: 'M';
+      }
+      .illust::after {
+        content: 'I'
+      }
+      .ugoira::after {
+        content: 'U';
+      }
+    }
+    .owl-stage > .owl-item {
+      border-top: 5px solid transparent;
     }
     .owl-item.center {
-      border-top: 5px solid dodgerblue;
-      box-sizing: border-box;
+      border-top: 5px solid $blue;
     }
+
   }
 }
 

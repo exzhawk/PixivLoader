@@ -3,6 +3,9 @@ html, body {
   height: 100%;
   width: 100%; }
 
+* {
+  box-sizing: border-box; }
+
 #container {
   height: 100%;
   width: 100%;
@@ -11,6 +14,24 @@ html, body {
   justify-content: flex-start;
   align-items: stretch;
   align-content: stretch; }
+  #container #info_wrapper #link_wrapper {
+    width: 100%;
+    display: flex; }
+    #container #info_wrapper #link_wrapper .info {
+      flex: 1; }
+    #container #info_wrapper #link_wrapper #title {
+      text-align: right; }
+    #container #info_wrapper #link_wrapper #author {
+      text-align: left; }
+    #container #info_wrapper #link_wrapper .sep {
+      margin: 0 10px; }
+  #container #info_wrapper:hover #caption {
+    display: block !important; }
+  #container #info_wrapper #caption {
+    display: none;
+    position: absolute;
+    z-index: 999;
+    background: white; }
   #container #big_wrapper {
     flex: 1;
     width: 100%;
@@ -29,9 +50,16 @@ html, body {
     height: 150px;
     width: 150px;
     background: no-repeat center; }
+  #container #thumbnail .owl-item .multi::after {
+    content: 'M'; }
+  #container #thumbnail .owl-item .illust::after {
+    content: "I"; }
+  #container #thumbnail .owl-item .ugoira::after {
+    content: 'U'; }
+  #container #thumbnail .owl-stage > .owl-item {
+    border-top: 5px solid transparent; }
   #container #thumbnail .owl-item.center {
-    border-top: 5px solid dodgerblue;
-    box-sizing: border-box; }
+    border-top: 5px solid #2196F3; }
 
 #debug {
   position: fixed;
