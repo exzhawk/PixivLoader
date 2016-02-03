@@ -45,21 +45,29 @@
       }
     });
     $('#open_touch').on('mousewheel', function(e) {
-      if ($$big.img_data['is_manga']) {
-        if (e.deltaY < 0) {
-          if ($$big.current_page < $$big.total_page) {
-            $$big.current_page += 1;
-            set_big_background_to_page($$big.current_page);
-          }
-        } else {
-          if ($$big.current_page > 0) {
-            $$big.current_page -= 1;
-            set_big_background_to_page($$big.current_page);
-          }
-        }
+      if (e.deltaY < 0) {
+        $$big.next_pic();
+      } else {
+        $$big.prev_pic();
       }
       return e.preventDefault();
     });
+    $$big.next_pic = function() {
+      if ($$big.img_data['is_manga']) {
+        if ($$big.current_page < $$big.total_page) {
+          $$big.current_page += 1;
+          return set_big_background_to_page($$big.current_page);
+        }
+      }
+    };
+    $$big.prev_pic = function() {
+      if ($$big.img_data['is_manga']) {
+        if ($$big.current_page > 0) {
+          $$big.current_page -= 1;
+          return set_big_background_to_page($$big.current_page);
+        }
+      }
+    };
     change_to = function(index) {
       var img_data;
       img_data = $thumbnail.find('.owl-stage').children('.owl-item').eq(index).find('.thumbnail_img')[0].img_data;
@@ -94,7 +102,6 @@
       return e.preventDefault();
     });
     load_page = function(page_number) {
-      console.log('loading ' + page_number);
       $.getJSON({
         url: '/get_following/' + page_number,
         success: function(data) {
@@ -123,6 +130,32 @@
       });
       return current_page += 1;
     };
+    $(document).on('keydown', function(e) {
+      var current_page, shown_count, total_count;
+      switch (e.which) {
+        case 33:
+          shown_count = $('.owl-stage .active').length + 1;
+          current_page = $('.owl-stage .center').index('.owl-stage > .owl-item');
+          return $thumbnail.trigger('to.owl.carousel', [current_page - shown_count, 200, true]);
+        case 34:
+          shown_count = $('.owl-stage .active').length + 1;
+          current_page = $('.owl-stage .center').index('.owl-stage > .owl-item');
+          return $thumbnail.trigger('to.owl.carousel', [current_page + shown_count, 200, true]);
+        case 35:
+          total_count = $('.owl-stage > .owl-item').length;
+          return $thumbnail.trigger('to.owl.carousel', [total_count - 1, 200, true]);
+        case 36:
+          return $thumbnail.trigger('to.owl.carousel', [0, 200, true]);
+        case 37:
+          return $thumbnail.trigger('prev.owl');
+        case 38:
+          return $$big.prev_pic();
+        case 39:
+          return $thumbnail.trigger('next.owl');
+        case 40:
+          return $$big.next_pic();
+      }
+    });
     current_page = 1;
     return load_page(current_page);
   });

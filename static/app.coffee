@@ -35,16 +35,23 @@ $ ->
         load_page(current_page)
 
   $('#open_touch').on 'mousewheel', (e)->
-    if $$big.img_data['is_manga']
-      if e.deltaY < 0
-        if $$big.current_page < $$big.total_page
-          $$big.current_page += 1
-          set_big_background_to_page($$big.current_page)
-      else
-        if $$big.current_page > 0
-          $$big.current_page -= 1
-          set_big_background_to_page($$big.current_page)
+    if e.deltaY < 0
+      $$big.next_pic()
+    else
+      $$big.prev_pic()
     e.preventDefault()
+
+  $$big.next_pic = ->
+    if $$big.img_data['is_manga']
+      if $$big.current_page < $$big.total_page
+        $$big.current_page += 1
+        set_big_background_to_page($$big.current_page)
+
+  $$big.prev_pic = ->
+    if $$big.img_data['is_manga']
+      if $$big.current_page > 0
+        $$big.current_page -= 1
+        set_big_background_to_page($$big.current_page)
 
 
   change_to = (index) ->
@@ -82,7 +89,6 @@ $ ->
     e.preventDefault()
 
   load_page = (page_number) ->
-    console.log('loading ' + page_number)
     $.getJSON
       url: '/get_following/' + page_number
       success: (data)->
@@ -105,6 +111,31 @@ $ ->
           init = false
         loading = false
     current_page += 1
+
+
+  $(document).on 'keydown', (e) ->
+    switch e.which
+      when 33 #pgup
+        shown_count = $('.owl-stage .active').length + 1
+        current_page = $('.owl-stage .center').index('.owl-stage > .owl-item')
+        $thumbnail.trigger 'to.owl.carousel', [current_page - shown_count, 200, true]
+      when 34 #pgdn
+        shown_count = $('.owl-stage .active').length + 1
+        current_page = $('.owl-stage .center').index('.owl-stage > .owl-item')
+        $thumbnail.trigger 'to.owl.carousel', [current_page + shown_count, 200, true]
+      when 35 #end
+        total_count = $('.owl-stage > .owl-item').length
+        $thumbnail.trigger 'to.owl.carousel', [total_count - 1, 200, true]
+      when 36 #home
+        $thumbnail.trigger 'to.owl.carousel', [0, 200, true]
+      when 37 #left
+        $thumbnail.trigger 'prev.owl'
+      when 38 #up
+        $$big.prev_pic()
+      when 39 #right
+        $thumbnail.trigger 'next.owl'
+      when 40 #down
+        $$big.next_pic()
 
 
   current_page = 1
