@@ -2,9 +2,12 @@ import json
 
 import tornado.ioloop
 import tornado.web
+from requests.packages import urllib3
 from tornado import concurrent
 
 from Pixiv import *
+
+urllib3.disable_warnings()
 
 
 class GetFollowingHandler(tornado.web.RequestHandler):
