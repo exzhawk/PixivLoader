@@ -12,9 +12,13 @@ $ ->
       responsive:
         0:
           items: 5
-        1200:
+        1050:
+          items: 7
+        1350:
           items: 9
-        1800:
+        1650:
+          items: 11
+        1900:
           items: 13
   .on 'mousewheel', (e)->
     if e.deltaY < 0
