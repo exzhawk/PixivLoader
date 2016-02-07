@@ -49,7 +49,8 @@ html, body {
   #container #thumbnail .owl-item .thumbnail_img {
     height: 150px;
     width: 150px;
-    background: no-repeat center; }
+    background: no-repeat center;
+    background-size: contain; }
   #container #thumbnail .owl-item .multi::after {
     content: 'M'; }
   #container #thumbnail .owl-item .illust::after {

@@ -73,6 +73,7 @@ html, body {
         height: 150px;
         width: 150px;
         background: no-repeat center;
+        background-size: contain;
       }
       .multi::after {
         content: 'M';
