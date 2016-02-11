@@ -56,7 +56,8 @@ html, body {
       width: 21px;
       height: 21px;
       text-align: center;
-      background-color: rgba(0, 0, 0, 0.2); }
+      background-color: rgba(0, 0, 0, 0.2);
+      border-radius: 3px; }
   #container #thumbnail .owl-item .multi::after {
     content: '\274F'; }
   #container #thumbnail .owl-item .illust::after {
