@@ -74,15 +74,22 @@ html, body {
         width: 150px;
         background: no-repeat center;
         background-size: contain;
+        &::after {
+          display: block;
+          width: 21px;
+          height: 21px;
+          text-align: center;
+          background-color: rgba(0, 0, 0, 0.2);
+        }
       }
       .multi::after {
-        content: 'M';
+        content: '\274F';
       }
       .illust::after {
-        content: 'I'
+        content: "\270E";
       }
       .ugoira::after {
-        content: 'U';
+        content: '\25B6';
       }
     }
     .owl-stage > .owl-item {

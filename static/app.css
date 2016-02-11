@@ -51,12 +51,18 @@ html, body {
     width: 150px;
     background: no-repeat center;
     background-size: contain; }
+    #container #thumbnail .owl-item .thumbnail_img::after {
+      display: block;
+      width: 21px;
+      height: 21px;
+      text-align: center;
+      background-color: rgba(0, 0, 0, 0.2); }
   #container #thumbnail .owl-item .multi::after {
-    content: 'M'; }
+    content: '\274F'; }
   #container #thumbnail .owl-item .illust::after {
-    content: "I"; }
+    content: "\270E"; }
   #container #thumbnail .owl-item .ugoira::after {
-    content: 'U'; }
+    content: '\25B6'; }
   #container #thumbnail .owl-stage > .owl-item {
     border-top: 5px solid transparent; }
   #container #thumbnail .owl-item.center {
