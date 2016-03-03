@@ -1,6 +1,6 @@
 # -*- encoding: utf-8 -*-
 # Author: Epix
-PROXY = ('127.0.0.1', '8888')
+PROXY = ('127.0.0.1', '8089')
 PROXIES = {
     'http': 'http://%s:%s' % PROXY,
     'https': 'http://%s:%s' % PROXY,

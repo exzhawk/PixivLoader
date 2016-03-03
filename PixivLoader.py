@@ -29,7 +29,6 @@ class GetCacheImgHandler(tornado.web.StaticFileHandler):
             if os.path.isfile(abs_path):
                 break
             else:
-                print('sleep')
                 yield gen.sleep(3)
         super(GetCacheImgHandler, self).get(path, include_body)
 
